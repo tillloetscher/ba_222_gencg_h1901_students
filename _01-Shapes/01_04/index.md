@@ -1,7 +1,7 @@
 ---
 layout: sketch
-title: "01_01" 
-category: "Experiment" 
+title: "scaling Cubes pt.2" 
+category: "Shapes" 
 thumb_name: "thumb.jpg"
 includes:
   - src: "sketch.js"

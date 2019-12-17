@@ -1,7 +1,7 @@
 ---
 layout: sketch
-title: "Snowflake" 
-category: "Experiment" 
+title: "making a grid of Cubes" 
+category: "Shapes" 
 thumb_name: "thumb.jpg"
 includes:
   - src: "sketch.js"
