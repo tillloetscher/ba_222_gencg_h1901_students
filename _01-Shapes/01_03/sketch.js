@@ -2,8 +2,7 @@
 // Generative Gestaltung, ISBN: 978-3-87439-759-9
 //< reference path="./p5.global-mode.d.ts" / >
 // Global var
-var sizeCube, thresholdW, thresholdH, cubeArray = [], x, y, modCounter = 0, transformCubeArray = [], modCounterTransform = 0, transformCubeArray2 = [], modCounterTransform2 = 0;
-var speed, resize, yOffset, xOffset, widthCube, heightCube, flagChange = true;
+var sizeCube, thresholdW, thresholdH, cubeArray = [], x, y, modCounter = 0, transformCubeArray = [], modCounterTransform = 0, speed, resize, yOffset, xOffset, widthCube, heightCube;
 
 function setup() {
   // Canvas setup
@@ -75,25 +74,7 @@ function setup() {
 
   }
 
-  for (y = yOffset - heightCube; y < height; y += heightCube * 0.75) {
-    for (x = xOffset; x < width; x += widthCube) {
-      if ((modCounterTransform2 % 2) == 1) {
-
-        transformCubeArray2.push(new Cube(x, y - (2 * heightCube), sizeCube / 4, speed, resize));
-      } else {
-
-        transformCubeArray2.push(new Cube(x - (widthCube / 2), y - (2 * heightCube), sizeCube / 4, speed, resize));
-      }
-
-
-    }
-    modCounterTransform2++;
-
-  }
-
-
-
-
+  
 }
 
 function draw() {
@@ -106,32 +87,32 @@ function draw() {
 
   }
 
-
-  if (flagChange) {
-    for (var i = 0; i < this.transformCubeArray.length; i++) {
-
-
-      //if (i % 2 == 0) {
+  for (var i = 0; i < this.transformCubeArray.length; i++) {
+    if (i % 2 == 0) {
       this.transformCubeArray[i].update(sin(frameCount));
-      //}
-
-      this.transformCubeArray[i].show();
+    } else {this.transformCubeArray[i].update(-sin(frameCount));
 
     }
-    flagChange=false;
+
+    this.transformCubeArray[i].show();
+
   }
 
-  if (!flagChange) {
-    for (var i = 0; i < this.transformCubeArray2.length; i++) {
-      //if (i % 2 == 0) {
-      this.transformCubeArray2[i].update(sin(frameCount));
-      // }
+  for (const cube of this.transformCubeArray) {
+    //cube.update(sin(frameCount));
 
-      this.transformCubeArray2[i].show();
 
-    }
-    flagChange = true;
+    //cube.getWidth();
+    //cube.getNewPosDiagonalRight();
+    //cube.getNewPosDiagonal();
+    //cube.show();
+
+
   }
+
+
+
+
 
 }
 
@@ -297,7 +278,6 @@ function saveThumb(w, h) {
   let img = get( width/2-w/2, height/2-h/2, w, h);
   save(img,'thumb.jpg');
 }
-
 
 
 

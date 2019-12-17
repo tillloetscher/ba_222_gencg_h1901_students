@@ -1,12 +1,12 @@
 # Site settings
-# title:
-# email:
+# title: Computer generated Art by Till Lötscher
+# email: till.loetscher@stud.hslu.ch
 # description: > # this means to ignore newlines until "baseurl:"
 # baseurl: "students-test/" # the subpath of your site, e.g. /blog/
 # url: "" # the base hostname & protocol for your site
 
 twitter_username: yourname
-github_username: yourname
+github_username: https://github.com/tillloetscher/
 title: I.BA_222_GENCG.H1901
 subtitle: I.BA_222_GENCG.H1901 - Winter 2019
 
