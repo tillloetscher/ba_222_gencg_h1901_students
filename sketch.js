@@ -1,104 +1,104 @@
-// Noise generated circle
-
+// Based on the code P_2_0_02.pde from
+// Generative Gestaltung, ISBN: 978-3-87439-759-9
+//< reference path="./p5.global-mode.d.ts" / >
 // Global var
-// Some of the var might be initialised in gui.js
-var canvas, backgroundGrey, radius;
-var actRandomSeed, count, points, increment;
+var sizeBox, circleArray = [], extraCanvas;
 
 function setup() {
   // Canvas setup
   canvas = createCanvas(windowWidth, windowHeight);
   canvas.parent("p5Container");
   // Detect screen density (retina)
-  // Comment it out if the sketch is too slow
   var density = displayDensity();
   pixelDensity(density);
-  // Init var
-  // some of the var are initialised in gui.js
-  backgroundGrey = 0;
-  count = 150;
-  points = [count];
-  background(backgroundGrey);
-  radius = 20;
-  increment = +1;
+  // Colors and drawing modes
+  //background color (153, 204, 255)
+  // ellipse Color (230, 21, 145)
+  extraCanvas = createGraphics(width, height);
+  extraCanvas.clear();
+  //extraCanvas.clear();
+
+
+  smooth();
+
+  background(0, 25, 28);
+
+  for (var i = 0; i < 100; i++) {
+    circleArray.push(new Circle(width / 2, height / 2, random(width / 60, width / 70), cos(i), sin(i)));
+
+  }
+
+
 }
 
 function draw() {
-  // background(backgroundGrey, 20);
-  smooth();
-
-  // Create points array
-  let faderX = .1;
-  let t = millis()/1000;
-  // let r = map(mouseY,0,height,10,radius);
-  if (radius>width/1.7 && radius>height/1.7) increment = -increment;
-  else if (radius<20) increment = -increment;
-  radius += increment; 
-  let angle = radians(360/count);
-
-  for (let i=0; i<count; i++){
-    let radiusRand = radius - noise(t, i*faderX)*50;
-    let x = width/2 + cos(angle*i)*radiusRand;
-    let y = height/2 + sin(angle*i)*radiusRand;
-    points[i] = createVector(x,y);
+  background(0,28);
+  image(extraCanvas, 0, 0);
+  extraCanvas.background(0, 28);
+  for (var i = 0; i < circleArray.length; i++) {
+    circleArray[i].update();
+    circleArray[i].show();
   }
 
-  // Draw
-  // stroke(noise(t/10)*255,0,noise(t/1)*100,255);
-  strokeHsluv(noise(t/10)*360,noise(t/20)*50,noise(t)*80);
-  strokeWeight(20);
-  noFill();
-  beginShape();
-  for (let i=0; i<count; i++){
-    // fill(255);
-    // ellipse(points[i].x, points[i].y,2,2);
-    // noFill();
-    curveVertex(points[i].x, points[i].y);
-    if (i==0 || i==count-1) curveVertex(points[i].x, points[i].y);
+
+}
+
+class Circle {
+  constructor(x, y, radius, xspeed, yspeed) {
+    this.mainColor = color(random(127, 255), random(127, 234), random(233, 255));
+    this.strokeColor = color(random(127, 255), random(127, 234), random(233, 255));
+    this.radius = radius;
+    this.trailArray = [];
+    this.x = x;
+    this.y = y;
+    this.xspeed = xspeed;
+    this.yspeed = yspeed;
+
+
+
   }
-  endShape(CLOSE);
+
+  update() {
+    this.x = this.x + this.xspeed * 6;
+    this.y = this.y + this.yspeed * 6;
+
+    // Check for bouncing
+    if ((this.x > width) || (this.x < 0)) {
+      this.xspeed = this.xspeed * -1;
+
+    }
+    if ((this.y > height) || (this.y < 0)) {
+      this.yspeed = this.yspeed * -1;
+    }
+
+  }
+
+
+
+  show() {
+    // Display at x,y location
+
+    //extraCanvas.fill(230, 21, 145,100);
+    extraCanvas.stroke(this.strokeColor);
+    extraCanvas.fill(this.mainColor);
+    //extraCanvas.fill((230, 21, 145, 2));
+    extraCanvas.ellipse(this.x, this.y, this.radius, this.radius);
+
+
+
+
+
+  }
 }
 
 function keyPressed() {
-  if (key == DELETE || key == BACKSPACE) background(360);  
   if (key == 's' || key == 'S') saveThumb(650, 350);
-}
-
-// Color functions
-function fillHsluv(h, s, l) {
-  var rgb = hsluv.hsluvToRgb([h, s, l]);
-  fill(rgb[0] * 255, rgb[1] * 255, rgb[2] * 255);
-}
-
-function strokeHsluv(h, s, l) {
-  var rgb = hsluv.hsluvToRgb([h, s, l]);
-  stroke(rgb[0] * 255, rgb[1] * 255, rgb[2] * 255);
-}
-
-function colorHsluv(h, s, l) {
-  var rgb = hsluv.hsluvToRgb([h, s, l]);
-  return color(rgb[0] * 255, rgb[1] * 255, rgb[2] * 255);
-}
-
-// Tools
-
-// resize canvas when the window is resized
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight, false);
-}
-
-//  conversion
-function toInt(value) {
-  return ~~value;
-}
-
-// Timestamp
-function timestamp() {
-  return Date.now();
+  if (keyCode === 32) setup(); // 32 = Space
 }
 
 // Thumb
 function saveThumb(w, h) {
-  let img = get(width / 2 - w / 2, height / 2 - h / 2, w, h);
-  save(img, 'thumb.jpg');
+  let img = get( width/2-w/2, height/2-h/2, w, h);
+  save(img,'thumb.jpg');
 }
+
